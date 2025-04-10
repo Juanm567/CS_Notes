@@ -8,7 +8,7 @@
 - In java: every object has a .hashcode() method
 - ~~~{
   "cat".hashcode(); // example: returns 98262
-  }
+
   ~~~
 
 ## Internal structure of HashMap
