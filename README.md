@@ -1,2 +1,2 @@
 # What is this for?
-Notes on CS
+My CS notes
