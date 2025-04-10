@@ -1,5 +1,0 @@
-# Hash maps in java
-## What are they (Hashtable)
-Data structure to store data as key-value pairs. allowing for fast retrieval of values based on their corresponding keys/
-using a hashing function
-
