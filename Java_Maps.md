@@ -3,6 +3,13 @@
 - A hashmap stored data in key-value pairs.
 - Keys are unique. Each key maps to one value.
 - Used for fast lookups, insertion and deletion.
+# What is hashing
+- Hashing = turning a key into a number
+- In java: every object has a .hashcode() method
+- ~~~{
+  "cat".hashcode(); // example: returns 98262
+  }
+  ~~~
 
 ## Internal structure of HashMap
 - HashMap contains one internal array: Node<k, v>[] table
