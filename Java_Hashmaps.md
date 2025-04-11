@@ -1,4 +1,4 @@
-# 🧠 Java HashMap – Full Deep-Dive Summary
+# 🧠 Java HashMap
 
 ---
 
