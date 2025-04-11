@@ -162,3 +162,147 @@ while (node != null):
 - Compression logic
 - Index-to-node mapping
 - Linked list chaining for collisions
+
+
+
+# 🧪 Java HashMap Example (Class-Test Style)
+
+This example follows the structure you're likely to be tested on in class, using explicit `new Integer(...)` syntax for `HashMap` operations.
+
+---
+
+## 📄 Code Example
+
+```java
+import java.util.HashMap;
+import java.util.Iterator;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        HashMap hashMap = new HashMap();
+
+        hashMap.put("One", new Integer(1));
+        hashMap.put("Two", new Integer(2));
+        hashMap.put("Three", new Integer(3));
+
+        Integer myInt = (Integer) hashMap.get("Two");
+
+        if (hashMap.containsValue(new Integer(1)))
+            System.out.println("HashMap contains 1 as value");
+        else
+            System.out.println("HashMap does not contain 1 as value");
+
+        if (hashMap.containsKey("One"))
+            System.out.println("HashMap contains One as key");
+        else
+            System.out.println("HashMap does not contain One as key");
+    }
+}
+```
+
+---
+
+## 🧠 Explanation
+
+### 🔸 `HashMap hashMap = new HashMap();`
+- Creates a raw (non-generic) `HashMap` that stores key-value pairs as `Object`.
+
+### 🔸 `hashMap.put("One", new Integer(1));`
+- Adds a new key-value pair to the map.
+- Uses `new Integer(1)` as value — required in some older Java versions and may match your class style.
+
+### 🔸 `hashMap.get("Two");`
+- Retrieves the value for the key `"Two"` (returns 2 wrapped in `Integer`).
+
+### 🔸 `containsValue(new Integer(1))`
+- Checks whether any entry in the map has the value `1`.
+
+### 🔸 `containsKey("One")`
+- Checks whether the key `"One"` exists in the map.
+
+---
+
+## 🧪 Output
+
+```
+HashMap contains 1 as value
+HashMap contains One as key
+```
+
+---
+
+## 🔑 Method Recap
+
+| Method                | Description                                      |
+|-----------------------|--------------------------------------------------|
+| `.put(key, value)`    | Adds or replaces a key-value pair                |
+| `.get(key)`           | Returns value for a key (cast needed if raw)     |
+| `.containsKey(key)`   | Returns `true` if the key exists                 |
+| `.containsValue(val)` | Returns `true` if any key maps to this value     |
+
+---
+# 🔑 Getting Keys and Values from a Java HashMap
+
+This example demonstrates how to retrieve **keys** and **entries (key-value pairs)** from a `HashMap` using an `Iterator`.
+
+---
+
+## 📄 Example Code
+
+```java
+Iterator itr;
+
+System.out.println("Retrieving all keys from the HashMap");
+itr = hashMap.keySet().iterator();  // Gets all keys
+while (itr.hasNext()) {
+    System.out.println(itr.next());  // Prints each key
+}
+
+System.out.println("Retrieving all values from the HashMap");
+itr = hashMap.entrySet().iterator();  // Gets all key-value entries
+while (itr.hasNext()) {
+    System.out.println(itr.next());  // Prints each key=value pair
+}
+```
+
+---
+
+## 🧠 Explanation
+
+### 🔹 `hashMap.keySet().iterator();`
+- Returns a `Set` of all keys in the map
+- Calling `.iterator()` lets you loop through them using `while`
+
+### 🔹 `hashMap.entrySet().iterator();`
+- Returns a `Set` of all key-value pairs as `Map.Entry` objects
+- Useful when you want both key and value in the loop
+
+### 🔹 `itr.hasNext()`
+- Checks if there are more items to process
+
+### 🔹 `itr.next()`
+- Returns the next key or entry from the iterator
+
+---
+
+## ⚠️ Important Note:
+
+> 🟣 *"The order items went in is not the same as how they come out!"*
+
+This is because:
+- **HashMap is unordered**
+- It does not maintain insertion order
+- If you want ordered entries, use `LinkedHashMap` or `TreeMap`
+
+---
+
+## ✅ Summary
+
+| Operation                    | Purpose                                 |
+|-----------------------------|-----------------------------------------|
+| `keySet()`                  | Get all keys                            |
+| `entrySet()`                | Get all key-value pairs as entries      |
+| `.iterator()`               | Loop through keys or entries            |
+| `.hasNext()` / `.next()`    | Iterate through the map                 |
+
+---
