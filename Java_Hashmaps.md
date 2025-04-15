@@ -44,7 +44,7 @@ class Node<K, V> {
 
 ---
 
-## 🔹 Hashing & Compression
+## 🔹 Hashing & Compression and spread
 
 ### 🔸 How it works:
 
@@ -52,14 +52,14 @@ class Node<K, V> {
    ```java
    int hash = key.hashCode();  // e.g., "cat".hashCode() = 98262
    ```
-
-2. Java compresses that hash to fit the array:
+2. java uses spread() which improves hash distribution by mixing bits after hashCode() to prevent bucket clustering.
+3. Java compresses that hash to fit the array:
    ```java
    int index = hash % table.length;
    // OR (faster if table.length is power of 2)
    int index = (table.length - 1) & hash;
    ```
-
+-  hashFunction() → spread() → compress()
 ---
 
 ## 🔹 Why Compression?
@@ -306,3 +306,82 @@ This is because:
 | `.hasNext()` / `.next()`    | Iterate through the map                 |
 
 ---
+## ⚠️ Bucket Clustering
+- Occurs when multiple keys are assigned to the same index due to poor hash distribution.
+- Leads to **collisions** which result in linked lists or red-black trees at that index.
+- The `spread()` step was introduced to **minimize clustering** and help retain O(1) performance.
+
+---
+
+## 🧠 Garbage Collection in HashMaps
+
+### 🔸 Object Reachability
+- Java’s GC only collects objects that are **no longer reachable**.
+- If a key or value is stored in a `HashMap`, it will not be collected unless the map itself is unreachable.
+- Think of references as “strings” tied to objects — GC cuts the “balloons” that have no strings attached.
+
+### 🔸 Nullifying a Value
+- You can keep a key but remove its value:
+  ```java
+  map.put("key", null);
+  ```
+- The key will still be present:
+  - `containsKey("key")` → `true`
+  - `get("key")` → `null`
+- Use `containsKey()` to differentiate between “null value” and “missing key.”
+
+---
+
+## 🔍 `containsKey()` & `containsValue()`
+
+### `.containsKey(key)`
+- HashMap hashes the key:
+  1. `hashCode()` → 2. `spread()` → 3. `compress()`
+- It checks the bucket and walks through the chain (linked list or tree) comparing keys with `.equals()`.
+
+### `.containsValue(value)`
+- Slower than `.containsKey()`
+- Iterates through **every entry** in the map and checks if any `.equals()` the given value.
+- Uses `.equals()` — not `==` — so:
+  ```java
+  map.containsValue(new Integer(1)) // true if 1 is mapped, even if created as a new object
+  ```
+  ## ⚖️ Load Factor in HashMap
+
+### 🔸 What is Load Factor?
+- The **load factor** controls when a `HashMap` resizes (i.e., rehashes and doubles its internal array size).
+- It is a value between `0.0` and `1.0`, and the **default is `0.75f`**.
+- A load factor of `0.75` means:
+  > When the map is 75% full, it will resize to reduce collisions and maintain performance.
+
+---
+
+### 🔸 Why is Load Factor Important?
+- It balances **memory usage** and **lookup speed**.
+- A **higher load factor** (e.g., `0.9`) uses less memory but increases chances of collisions.
+- A **lower load factor** (e.g., `0.5`) reduces collisions but increases memory usage (resizes sooner).
+
+---
+
+### 🔸 Resizing Example
+```java
+HashMap<String, String> map = new HashMap<>(16, 0.75f);
+```
+
+- Initial capacity: `16`
+- Load factor: `0.75`
+- Resize threshold = `16 × 0.75 = 12` entries  
+  → After inserting the 13th item, HashMap will **resize** (double to 32 buckets).
+
+---
+
+### 🧠 Summary
+
+| Term            | Meaning                              |
+|-----------------|--------------------------------------|
+| Load Factor     | % full before resizing               |
+| Default Value   | `0.75`                               |
+| Resize Trigger  | entries > (capacity × load factor)   |
+| High Load Factor| Less memory, more collisions         |
+| Low Load Factor | More memory, fewer collisions        |
+
